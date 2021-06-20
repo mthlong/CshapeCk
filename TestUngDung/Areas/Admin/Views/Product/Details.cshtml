@@ -1,0 +1,54 @@
+﻿@model ModelEF.Model.Product
+
+@{ ViewBag.Title = "Chi tiết sản phẩm";
+                Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml"; }
+<br />
+<div class="col-md-6">
+    <div class="panel">
+        <div class="panel-body">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ID)
+                <input type="text" id="disabled-input" name="disabled-input" placeholder="@Html.DisplayFor(model => model.ID)" disabled="" class="form-control">
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name)
+                <input type="text" id="disabled-input" name="disabled-input" placeholder="@Html.DisplayFor(model => model.Name)" disabled="" class="form-control">
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Metatitle)
+                <input type="text" id="disabled-input" name="disabled-input" placeholder="@Html.DisplayFor(model => model.Metatitle)" disabled="" class="form-control">
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.UniqueCost)
+                <input type="text" id="disabled-input" name="disabled-input" placeholder="@Html.DisplayFor(model => model.UniqueCost)" disabled="" class="form-control">
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Quantity)
+                <input type="text" id="disabled-input" name="disabled-input" placeholder="@Html.DisplayFor(model => model.Quantity)" disabled="" class="form-control">
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Image)
+                <img src="@(Url.Content(Model.Image) == null ? "~/Assets/Admin/img/book.jpg" : Url.Content(Model.Image))" height="263" width="263" alt="ảnh sản phẩm" />
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description)
+                <textarea rows="5" cols="50" class="form-control" disabled="" placeholder="@Html.DisplayFor(model => model.Description)"></textarea>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Status)
+                @Html.DropDownListFor(modelItem => modelItem.Status, new[] { new SelectListItem { Text = "Còn hàng", Value = "True" }, new SelectListItem { Text = "Hết hàng", Value = "False" } }, new { @class = "form-control", @disabled = "disabled" })
+                @*<input type="text" id="disabled-input" name="disabled-input" placeholder="@Html.DisplayFor(model => model.Status)" disabled="" class="form-control">*@
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Category.Name)
+                @Html.DropDownListFor(model => model.CategoryID, null, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Author)
+                <input type="text" id="disabled-input" name="disabled-input" placeholder="@Html.DisplayFor(model => model.Author)" disabled="" class="form-control">
+            </div>
+        </div>
+    </div>
+    <a href="@Url.Action("edit", new { id = Model.ID })" type="button" class="btn btn-primary">Sửa</a>
+    <a href="@Url.Action("Index", "product")" type="button" class="btn btn-warning">Quay lại</a>
+</div>

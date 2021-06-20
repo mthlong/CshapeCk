@@ -1,0 +1,110 @@
+﻿@model ModelEF.Model.Product
+@{ ViewBag.Title = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml"; 
+   }
+
+
+<div class="col-md-6">
+    <div class="panel">
+        <div class="panel-body">
+            @using (Html.BeginForm("create", "product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+@Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Name)
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Metatitle)
+                                                    @Html.EditorFor(model => model.Metatitle, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Metatitle, "", new { @class = "text-danger" })
+                                                </div>
+                                                                <div class="form-group">
+                                                                    @Html.LabelFor(model => model.UniqueCost)
+                                                                    @Html.EditorFor(model => model.UniqueCost, new { htmlAttributes = new { @class = "form-control" } })
+                                                                    @Html.ValidationMessageFor(model => model.UniqueCost, "", new { @class = "text-danger" })
+                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    @Html.LabelFor(model => model.Quantity)
+                                                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                                                                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    @Html.LabelFor(model => model.Status)
+                                                                                                    @Html.DropDownListFor(model => model.Status, new List<SelectListItem>()
+                                                                                                                                                                                                    {
+                               new SelectListItem() { Text = "Còn hàng", Value = "True" },
+                               new SelectListItem() { Text = "Hết hàng", Value = "False"}
+                            }, "Chọn trạng thái sản phẩm.....", new { @class = "form-control" })
+                                                                                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                                                                                </div>
+                                                                                                                <div class="form-group">
+                                                                                                                    @Html.LabelFor(model => model.Description)
+                                                                                                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @cols = "50", @rows = "5" })
+                                                                                                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                                                                                </div>
+                                                                                                                                <div class="form-group">
+                                                                                                                                    @Html.LabelFor(model => model.Image)
+                                                                                                                                    <img src="~/Assets/Admin/images/book.jpg" width="200" id="previewImage" height="200" />
+                                                                                                                                    <br />
+                                                                                                                                    <input type="file" name="imageSave" class="form-control-file" onchange="ShowImagePreview(this, document.getElementById('previewImage'))" />
+                                                                                                                                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                                                                                                                </div>
+                                                                                                                                                <div class="form-group">
+                                                                                                                                                    @Html.LabelFor(model => model.CategoryID)
+                                                                                                                                                    @Html.DropDownListFor(model => model.CategoryID, null, "--Chọn loại hàng", new { @class = "form-control" })
+                                                                                                                                                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                                                                                                                                                </div>
+                                                                                                                                                                <div class="form-group">
+                                                                                                                                                                    @Html.LabelFor(model => model.Author)
+                                                                                                                                                                    @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control" } })
+                                                                                                                                                                    @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+                                                                                                                                                                </div>
+                                                                                                                                                                                <button type="submit" class="btn btn-primary">Lưu</button>}
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="col-md-4">
+        <a href="@Url.Action("Index","product")" class="btn btn-danger">Quay lại</a>
+    </div>
+</div>
+
+@section sectionfooter{
+    <script type="text/javascript">
+        function ShowImagePreview(imageUploader, previewImage) {
+            // lấy file nào đó
+            if (imageUploader.files && imageUploader.files[0]) {
+                // đọc file
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // đưa hình vào thuộc tính đường dẫn
+                    $(previewImage).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(imageUploader.files[0]);
+            }
+        }
+
+        //Viết đến đâu chữ chuyển đến đó
+        $('#Name').keypress(function () {
+            $('#Metatitle').val(getMetaTitle($(this).val()));
+        });
+
+        //Hàm chuyển chữ có dấu thành không dấu
+        function getMetaTitle(str) {
+            str = str.toLowerCase();
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+            str = str.replace(/đ/g, 'd');
+            str = str.replace(/\W+/g, ' ');
+            str = str.replace(/\s/g, '-');
+            return str;
+        }</script>
+
+}
